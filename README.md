@@ -11,15 +11,20 @@ Las siguientes claves debe inyectar en .env. Es fundamental ingresar estas clave
 - USER_AGENT: User agent que se desea usar para las llamadas web desde el LLM. Ejemplo: 
 
 ## Microservicios
-    El proyecto cuenta con 2 microservicios:
-        - db: Instancia una base de datos PostgreSQL con PGVector para el almenamiento de vectores.
-        - api: Instancia una api de FastAPI para responder a las llamadas de inyección de nueva información de documentos PDF, HTML, MDy  TXT como de páginas web; y responder a preguntas de aquella información.
-    Ambos servicios se levantan ejecutando con docker compose, que en v2:
-        - docker compose build api: Para crear la imagen de api. db no necesita creación de imagen ya que usa capa definida por pgvector.
-        - docker compose create [servicio: api y/o db]: Para crear la instancia del microservicio.
-        - docker compose start [servicio: api y/o db]: En cuanto api depende de db, si se levanta api, db se levantará automáticamente si no está corriendo ya.
-    O bien si se prefiere puede usar el comando up que crea imagen, contener e inicia.
-    Para detener un servicio:
-        - docker compose stop [servicio: api y/o db]
-    O bien use down si se quiere remover instancia, imágenes y volúmenes al momento de detener servicio.
-    La API es accesible en http://localhost:8080/docs
+El proyecto cuenta con 2 microservicios:
+- db: Instancia una base de datos PostgreSQL con PGVector para el almenamiento de vectores.
+- api: Instancia una api de FastAPI para responder a las llamadas de inyección de nueva información de documentos PDF, HTML, MDy  TXT como de páginas web; y responder a preguntas de aquella información.
+
+Ambos servicios se levantan ejecutando con docker compose, que en v2:
+- docker compose build api: Para crear la imagen de api. db no necesita creación de imagen ya que usa capa definida por pgvector.
+- docker compose create [servicio: api y/o db]: Para crear la instancia del microservicio.
+- docker compose start [servicio: api y/o db]: En cuanto api depende de db, si se levanta api, db se levantará automáticamente si no está corriendo ya.
+
+O bien si se prefiere puede usar el comando up que crea imagen, contener e inicia.
+
+Para detener un servicio:
+- docker compose stop [servicio: api y/o db]
+
+O bien use down si se quiere remover instancia, imágenes y volúmenes al momento de detener servicio.
+
+La API es accesible en http://localhost:8080/docs

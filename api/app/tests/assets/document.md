@@ -1,21 +1,14 @@
 # RAG
 Aplicación Python de Recuperación de Generación Aumentada  (RAG por sus sigla en inglés: Retrieval-Augmented Generation) que permite inyectar datos de documentos y responder preguntas usando LLM (Gemini) y visibilidad mediante Langsmith.
 
-Este proyecto trabaja con PostgreVector y modelos de chat de Google Gemini como Open AI y Antrophic, por defecto con modelos de Gemini.
-
 ## Claves secretas
 Las siguientes claves debe inyectar en .env. Es fundamental ingresar estas claves antes de la ejecución del proyecto.
-- LANGSMITH_API_KEY: Clave de langsmith. Puede obtener una en https://smith.langchain.com/.
-- GOOGLE_API_KEY[Requerido si se ocupa modelo de Google]: Clave para usar de Gemini. Puede obtener una en https://aistudio.google.com/api-keys.
-- OPENAI_API_KEY[Requerido si se ocupa modelo de Open AI]: Clave para usar de Open AI. Puede obtener una en https://platform.openai.com/settings/organization/api-keys.
-- ANTHROPIC_API_KEY[Requerido si se ocupa model de Anthropic]: Clave para usar de Anthropic. Puede obtener una en https://console.anthropic.com/.
+- LANGSMITH_API_KEY: Clave de langsmith. Puede obtener una en https://smith.langchain.com/
+- GOOGLE_API_KEY: Clave para usar en Gemini. Puede obtener una en https://aistudio.google.com/api-keys
 
 ## Otras variables de entorno:
 - LANGSMITH_TRACING: Booleano (True o False) para indicar si se realiza rastreo de las llamadas a LLM.
 - USER_AGENT: User agent que se desea usar para las llamadas web desde el LLM.
-- CHAT_MODEL [Opcional]: Modelo para entablar la conversación que busca responder a la pregunta del usuario. Por defecto es google_genai:gemini-2.5-flash-lite.
-- EMBEDDINGS_PROVIDER [Opcional: gemini | open_ai]: Plataforma que provee el modelo para hacer los embeddings. Por defecto es gemini.
-- EMBEDDINGS_MODEL [Opcional]: Model para hacer los embeddings. Por defecto es models/gemini-embedding-001.
 
 ## Microservicios
 El proyecto cuenta con 2 microservicios:
@@ -27,17 +20,11 @@ Ambos servicios se levantan ejecutando con docker compose, que en v2:
 - docker compose create [servicio: api y/o db]: Para crear la instancia del microservicio.
 - docker compose start [servicio: api y/o db]: En cuanto api depende de db, si se levanta api, db se levantará automáticamente si no está corriendo ya.
 
-O bien si se prefiere puede usar el comando `docker compose up` que crea imagen, construye e inicia containers y volúmenes.
+O bien si se prefiere puede usar el comando up que crea imagen, contener e inicia.
 
 Para detener un servicio:
 - docker compose stop [servicio: api y/o db]
 
-O bien use `docker compose down` si se quiere remover instancia, imágenes y volúmenes al momento de detener servicio.
+O bien use down si se quiere remover instancia, imágenes y volúmenes al momento de detener servicio.
 
 La API es accesible en http://localhost:8080/docs
-
-## Tests:
-Para ejecutar tests:
-```docker compose exec api pytest```
-Si se desea correr un test en particular:
-```docker compose exec api pytest tests/test_rag.py::[nombre_test]```

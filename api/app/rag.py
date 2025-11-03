@@ -3,7 +3,7 @@ import tempfile
 from pydantic import HttpUrl 
 from langchain.chat_models import init_chat_model
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
-from langchain_core.vectorstores import InMemoryVectorStore
+from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain.tools import tool
 from langchain_core.messages import ToolMessage
@@ -11,18 +11,26 @@ from langchain_community.document_loaders import (
     WebBaseLoader,
     PyPDFLoader,
     BSHTMLLoader,
-    TextLoader,
-    UnstructuredMarkdownLoader
+    TextLoader
     )
 
 import requests
 from langchain.agents import create_agent
 from langchain_postgres import PGVector
 
+EMBEDDINGS_FACTORIES = {
+    'gemini': GoogleGenerativeAIEmbeddings,
+    'open_ai': OpenAIEmbeddings
+}
+
+chat_model = os.environ.get('CHAT_MODEL', 'google_genai:gemini-2.5-flash-lite').lower()
+embeddings_provider = os.environ.get('EMBEDDINGS_PROVIDER', 'gemini').lower()
+EmbeddingsFactory = EMBEDDINGS_FACTORIES[embeddings_provider]
+embeddings_model = os.environ.get('EMBEDDINGS_MODEL', 'models/gemini-embedding-001').lower()
 
 class RagManager:
-    model = init_chat_model("google_genai:gemini-2.5-flash-lite")
-    embeddings = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001")
+    model = init_chat_model(chat_model)
+    embeddings = EmbeddingsFactory(model=embeddings_model)
     vector_store = PGVector(
         embeddings=embeddings,
         collection_name="items",
@@ -32,7 +40,7 @@ class RagManager:
         "pdf": PyPDFLoader,
         "text": TextLoader,
         "html": BSHTMLLoader,
-        "markdown": UnstructuredMarkdownLoader
+        "markdown": TextLoader
     }
 
     def __init__(self):
@@ -60,6 +68,7 @@ class RagManager:
         elif isinstance(content, bytes):
             with tempfile.NamedTemporaryFile() as file:
                 file.write(content)
+                file.seek(0)
                 loader = self.loaders[document_type](file.name)
                 docs = loader.load()
         text_splitter = RecursiveCharacterTextSplitter(

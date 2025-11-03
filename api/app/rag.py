@@ -68,7 +68,9 @@ class RagManager:
             add_start_index=True,  # track index in original document
         )
         all_splits = text_splitter.split_documents(docs)
-        document_ids = self.vector_store.add_documents(documents=all_splits)
+        document_ids = []
+        if all_splits:
+            document_ids = self.vector_store.add_documents(documents=all_splits)
         return len(document_ids)
 
     def query(self, question):

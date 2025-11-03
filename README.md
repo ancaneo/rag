@@ -8,7 +8,7 @@ Las siguientes claves debe inyectar en .env. Es fundamental ingresar estas clave
 
 ## Otras variables de entorno:
 - LANGSMITH_TRACING: Booleano (True o False) para indicar si se realiza rastreo de las llamadas a LLM.
-- USER_AGENT: User agent que se desea usar para las llamadas web desde el LLM. Ejemplo: 
+- USER_AGENT: User agent que se desea usar para las llamadas web desde el LLM.
 
 ## Microservicios
 El proyecto cuenta con 2 microservicios:

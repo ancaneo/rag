@@ -10,4 +10,4 @@ COPY app /app
 WORKDIR app
 RUN pip install --upgrade -r requirements.txt
 
-CMD ["fastapi", "dev", "--host", "0.0.0.0", "main.py"]
+CMD ["fastapi", "run", "main.py"]
